@@ -12,7 +12,9 @@ const AdminProductController=require('../controllers/adminProduct');
 
 router.get('/add-product',AdminProductController.getAddProduct);
 router.post('/add-product', AdminProductController.postAddProduct);
-router.get('/all-Products',AdminProductController.getAllProducts);
+router.get('/all-Admin-Products',AdminProductController.getAllAdminProduct);
+
+
 
 
 

@@ -51,4 +51,21 @@ module.exports = class Product {
 
         })
     }
+    //delete product:-->
+    static deleteById(id,cb){
+        const p = path.join(rootDir, 'data', 'products.json');
+
+        getProductsFromfile(products=>{
+
+            const prodTobeDel=products.find(prod=>prod.id===id);
+            const indexNo=products.indexOf(prodTobeDel);
+            products.splice(indexNo,1);
+            fs.writeFile(p, JSON.stringify(products), err => {
+                // console.log(err);
+            cb(products);
+            });
+            
+
+        })
+    }
 }

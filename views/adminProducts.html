@@ -81,7 +81,7 @@
     <!-- <h1 class="display-5 text-dark text-center text-decoration-underline">Products</h5> -->
 
     <div id="main" class="container-lg justify-content-center">
-        <h1 class="display-5 text-dark text-center text-decoration-underline">All Products</h5>
+        <h1 class="display-5 text-dark text-center">Admin Products</h5>
             <div class="row justify-content-center" id="products"></div>
     </div>
 
@@ -116,17 +116,12 @@
 
             <div class="row ms-3 jstify-content-between">
                 <div class="col-sm-4">
-            <button class=" btn btn-outline-dark btn-warning" onclick=getDetails('${eachObj.id}')> Details</button>
+            <button class=" btn btn-outline-dark btn-warning" onclick=getDetails('${eachObj.id}')>Edit</button>
             </div>
             <div class="col-sm-6">
-            <form action="/cart" method="POST">
-                <input type="hidden" name="id" value='${eachObj.id}'>
-                <input type="hidden" name="title" value='${eachObj.title}'>
-                <input type="hidden" name="productPrice" value='${eachObj.productPrice}'>
-                <input type="hidden" name="productUrl" value='${eachObj.productUrl}'>
-                <input type="hidden" name="productDescription" value='${eachObj.productDescription}'>
-                <button class=" btn btn-outline-dark btn-warning">add to cart</button>
-            </form> 
+           
+                <button class="btn btn-outline-dark btn-warning" onclick=deleteProduct('${eachObj.id}')>Delete</button>
+            
             </div>
             </div>
             </div></div>`;
@@ -145,51 +140,24 @@
             }
             get();
         });
+        function deleteProduct(prodId){
 
+            axios.delete(`http://localhost:3000/${prodId}`)
+            .then((res)=>{
+                removefromScreen(prodId);
 
-        function getDetails(prodId) {
-
-            axios.get(`http://localhost:3000/${prodId}`)
-                .then(res => {
-                    console.log(res);
-                    const noDisplay = document.getElementById('main');
-                    noDisplay.style.display = 'none';
-
-                    const parent = document.getElementById("display");
-                    const child = `<div class="justify-content-center mt-3 rounded border border-info col-md-3"><div class="col align-item-center">
-                    <h1 class="display-5 text-dark text-center text-decoration-underline">Product Details</h5>
-            <h3 class="text-primary text-center">${res.data.title}</h3>
-            <img class="rounded mx-auto d-block img-thumbnail" height="200" width="190" src="${res.data.productUrl}" alt="${res.data.title}">
-            <h3 class="text-success text-center">${res.data.productPrice}$</h3>
-            <p class="text-dark text-center fst-italic">${res.data.productDescription}</p>
-            <form action="/cart" method="POST">
-                <input type="hidden" name="id" value='${res.data.id}'>
-                <input type="hidden" name="title" value='${res.data.title}'>
-                <input type="hidden" name="productPrice" value='${res.data.productPrice}'>
-                <input type="hidden" name="productUrl" value='${res.data.productUrl}'>
-                <input type="hidden" name="productDescription" value='${res.data.productDescription}'>
-                <div class="d-grid gap-2">
-                    
-                  
-                  <button class="btn btn-outline-dark btn-warning">Add to cart</button>
-                </div>
-            
-            </form> 
-            
-            </div></div>`;
-                    parent.innerHTML = parent.innerHTML + child;
-                    // console.log(parent);
-                    // console.log(child);
-
-                })
-                .catch(err=>{
-                    console.log(err);
-                })
-
-
-
-
+            })
         }
+        function removefromScreen(prodId){
+            const child=document.getElementById(prodId);
+            const parent=document.getElementById("products");
+            if(child){
+                parent.removeChild(child);
+            }
+        }
+
+
+        
 
 
     </script>

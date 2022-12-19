@@ -28,10 +28,13 @@
                         <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/admin/all-Products">All-Products</a>
+                        <a class="nav-link active" aria-current="page" href="/shop/all-Products">All-Products</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/admin/add-product">Add Product</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/admin/all-Admin-Products">Admin Product</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/shop/cart">Cart</a>
@@ -66,57 +69,45 @@
         </div>
     </nav>
 
-    <div id="total"></div>
-
     <div class="container-fluid my-5">
-
+       
         <div id="main" class="container-lg justify-content-center">
             <h1 class="display-5 text-dark text-center text-decoration-underline">Your cart</h5>
                 <div class="row justify-content-center" id="products"></div>
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
         <script>
             window.addEventListener('DOMContentLoaded', () => {
-                async function get() {
-                    try {
-                        let getResponse = await axios.get("http://localhost:3000/cart");
-                        let mainObj = getResponse.data;
-                        // console.log("main obj-->",mainObj.products);
-                        total.innerHTML = mainObj.totalPrice;
-                        
-                        const cart=[];
-                        for (let i = 0; i < mainObj.products.length; i++) {
-                            // console.log(mainObj.products[i].id);
-                            
-                            
-                            
-                            axios.get(`http://localhost:3000/${mainObj.products[i].id}`)
-                            .then((res)=>{
-                                // console.log((res.data));
-                                
+            async function get() {
+                try {
+                    console.log("string");
+                    let getResponse = await axios.get("http://localhost:3000/cart");
+                    for (let i = 0; i < getResponse.data.length; i++) {
 
-                                cart.push(res.data);
+                        let eachObj = getResponse.data[i]
 
-                                
-                            });
-                            
-                            
-                            
-                            
-                        }
-                        // for (let j =0;j<cart.length;j++)
-                        // let parent = document.getElementById("products");
-                            // let child=`<div class="col bg-primary"><img class="rounded mx-auto d-block img-thumbnail" height="200" width="190" src="${res.data.productUrl}" alt="${res.data.title}"></div>`
-                            // parent+=child;
-                    console.log(cart);
+                        //display on screen:-->
+                        const parent_node = document.getElementById("products");
+                        const child_node = `<div id=${eachObj.id} class="justify-content-center mt-3 rounded border border-info col-md-3"><div class="col align-item-center">
+            <h3 class="text-primary text-center">${eachObj.title}</h3>
+            <img class="rounded mx-auto d-block img-thumbnail" height="200" width="190" src="${eachObj.productUrl}" alt="${eachObj.title}">
+            <h3 class="text-success text-center">${eachObj.productPrice}$</h3>
+            <p class="text-dark text-center fst-italic">${eachObj.productDescription}</p>
 
-                  
+            <button class=" btn btn-outline-dark btn-warning">Purchase Now</button>
+            <button class=" ms-5 btn btn-outline-dark btn-warning btn-fluid">Remove</button>
 
-                    
+            
+          
+            </div></div>`;
+
+                        parent_node.innerHTML = parent_node.innerHTML + child_node;
+
+                    }
 
                 }
                 catch (err) {
-                    document.body.innerHTML += `< h3 > 1st ON REFRESH: something went wrong:: ref${ err }</h3>`
+                    document.body.innerHTML += `<h3>1st ON REFRESH:something went wrong::ref${err}</h3>`
 
 
                 }
@@ -125,7 +116,7 @@
             get();
         });
 
-       
+
 
 
 

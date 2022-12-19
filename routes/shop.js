@@ -13,7 +13,13 @@ router.get('/shop',getShopProductController.getProductView)
 //for cart:
 router.post('/cart',getShopProductController.postcart);
 router.get('/shop/cart',getShopProductController.getcartPage);
-router.get('/cart',getShopProductController.getCartItem);//cart back-end
+router.get('/cart',getShopProductController.getCartItem);
+router.get('/shop/all-Products',getShopProductController.getAllProducts);
+
+//for delete product:-->
+router.delete('/:prodId',getShopProductController.deleteProduct)
+
+
 
 router.get('/:productId',getShopProductController.getProductById);
 

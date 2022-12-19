@@ -14,9 +14,14 @@ exports.getProduct = (req, res, next) => {
     // res.sendFile(path.join(rootDir, 'views', 'shop.html'));
     
 }
+exports.getAllProducts=(req,res,next)=>{
+    res.sendFile(path.join(rootDir, 'views','products-list.html'));
+
+}
 //for cart
 exports.postcart=(req,res,next)=>{
-   Cart.addProductToCart(req.body.id,req.body.productPrice)
+    const mycart= new Cart(req.body.id,req.body.title,req.body.productUrl,req.body.productPrice,req.body.productDescription);
+    mycart.save();
     res.redirect('/shop/cart');
 }
 exports.getCartItem=(req,res,next)=>{
@@ -46,6 +51,13 @@ exports.getProductById=(req,res,next)=>{
 
 }
 
+exports.deleteProduct=(req,res,next)=>{
+    const productId=req.params.prodId;
+    Product.deleteById(productId,products=>{
+        res.json(products);
+    })
+
+}
 
 exports.getProductView=(req,res,next)=>{
     res.sendFile(path.join(rootDir,'views','shop.html'));
