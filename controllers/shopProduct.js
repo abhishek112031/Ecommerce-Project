@@ -33,6 +33,10 @@ exports.getCartItem=(req,res,next)=>{
 exports.getcartPage=(req,res,next)=>{
     res.sendFile(path.join(rootDir, 'views', 'yourCart.html'));
 }
+exports.getProductView=(req,res,next)=>{
+    res.sendFile(path.join(rootDir,'views','shop.html'));
+
+}
 
 
 
@@ -59,9 +63,6 @@ exports.deleteProduct=(req,res,next)=>{
 
 }
 
-exports.getProductView=(req,res,next)=>{
-    res.sendFile(path.join(rootDir,'views','shop.html'));
 
-}
 
 

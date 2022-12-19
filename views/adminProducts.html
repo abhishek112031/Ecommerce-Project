@@ -4,15 +4,25 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>All Products</title>
+    <title>Admin Products</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/product.css">
+
     <style>
         body {
             background-image: url("https://plus.unsplash.com/premium_photo-1661497555465-93a250c0bbf1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzAwfHxlJTIwY29tbWVyY2V8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60");
             background-attachment: fixed;
             background-repeat: no-repeat;
             background-size: cover;
+        }
+        #submit{
+            border: 1px solid black;
+        }
+        #submit:hover{
+            color: white;
+            background-color: blue;
+
         }
     </style>
 </head>
@@ -42,7 +52,8 @@
                         <a class="nav-link active" aria-current="page" href="/admin/add-product">Add Product</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/admin/all-Admin-Products">Admin Product</a>
+                        <a class="nav-link active" aria-current="page" href="/admin/all-Admin-Products">Admin
+                            Product</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/shop/cart">Cart</a>
@@ -116,7 +127,7 @@
 
             <div class="row ms-3 jstify-content-between">
                 <div class="col-sm-4">
-            <button class=" btn btn-outline-dark btn-warning" onclick=getDetails('${eachObj.id}')>Edit</button>
+            <button class=" btn btn-outline-dark btn-warning" onclick=editProduct('${eachObj.id}')>Edit</button>
             </div>
             <div class="col-sm-6">
            
@@ -140,24 +151,63 @@
             }
             get();
         });
-        function deleteProduct(prodId){
+        function deleteProduct(prodId) {
 
             axios.delete(`http://localhost:3000/${prodId}`)
-            .then((res)=>{
-                removefromScreen(prodId);
+                .then((res) => {
+                    removefromScreen(prodId);
 
-            })
+                })
         }
-        function removefromScreen(prodId){
-            const child=document.getElementById(prodId);
-            const parent=document.getElementById("products");
-            if(child){
+        function removefromScreen(prodId) {
+            const child = document.getElementById(prodId);
+            const parent = document.getElementById("products");
+            if (child) {
                 parent.removeChild(child);
             }
         }
 
+        function editProduct(prodId) {
+            axios.get(`http://localhost:3000/${prodId}`)
+                .then((res) => {
+                    console.log(res.data);
+                    let mainDiv = document.getElementById("main");
+                    mainDiv.style.display = "none";
+                    deleteProduct(prodId);
+                    let parent = document.getElementById("display");
+                    let child = `<h1 class="display-5 text-center">Edit Product<h1>
+                    <main>
+        <form class="product-form" action="/admin/add-product" method="POST">
+            <div class="form-control">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" value='${res.data.title}'>
+                <label for="url">Add Product Url</label>
+                <input type="text" name="productUrl" id="url" value='${res.data.productUrl}'>
+                <label for="price">Price</label>
+                <input type="number" name="productPrice" id="price" value='${res.data.productPrice}'>
+                <label for="description">Description</label>
+                <textarea name="productDescription" id="description" cols="30" rows="5">${res.data.productDescription}</textarea>
+            </div>
 
-        
+
+            <button id="submit" class="btn btn-light" type="submit">Add Product</button>
+        </form>
+    </main>`;
+
+
+                    // let thidform=document.getElementById('form');
+                    console.log(child);
+                    parent.innerHTML = child;
+                    console.log(parent);
+
+
+
+                })
+
+        }
+
+
+
 
 
     </script>
