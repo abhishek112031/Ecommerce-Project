@@ -69,45 +69,64 @@
         </div>
     </nav>
 
-    <div class="container-fluid my-5">
-       
+    <div class="container-fluid my-2">
+
         <div id="main" class="container-lg justify-content-center">
-            <h1 class="display-5 text-dark text-center text-decoration-underline">Your cart</h5>
+            <h1 class="display-5 fw-bold text-dark text-center">Your cart: 👇</h5>
+                <h1 class="display-6 fst-italic text-center">Total Price Of Cart: <span class="text-primary fw-bold" id="total"></span></h1>
                 <div class="row justify-content-center" id="products"></div>
         </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
         <script>
             window.addEventListener('DOMContentLoaded', () => {
-            async function get() {
-                try {
-                    console.log("string");
-                    let getResponse = await axios.get("http://localhost:3000/cart");
-                    for (let i = 0; i < getResponse.data.length; i++) {
+                async function get() {
+                    try {
+                        let getResponse = await axios.get("http://localhost:3000/cart");
+                        let mainObj = getResponse.data;
+                         
 
-                        let eachObj = getResponse.data[i]
-
-                        //display on screen:-->
-                        const parent_node = document.getElementById("products");
-                        const child_node = `<div id=${eachObj.id} class="justify-content-center mt-3 rounded border border-info col-md-3"><div class="col align-item-center">
-            <h3 class="text-primary text-center">${eachObj.title}</h3>
-            <img class="rounded mx-auto d-block img-thumbnail" height="200" width="190" src="${eachObj.productUrl}" alt="${eachObj.title}">
-            <h3 class="text-success text-center">${eachObj.productPrice}$</h3>
-            <p class="text-dark text-center fst-italic">${eachObj.productDescription}</p>
-
-            <button class=" btn btn-outline-dark btn-warning">Purchase Now</button>
-            <button class=" ms-5 btn btn-outline-dark btn-warning btn-fluid">Remove</button>
-
+                        total.innerHTML = `${mainObj.totalPrice} $`;
+                        for (let i = 0; i < mainObj.products.length; i++) {
+                          
+                            axios.get(`http://localhost:3000/${mainObj.products[i].id}`)
+                            .then((res)=>{
+                        
+                            let parent = document.getElementById("products");
+                            let child = `<div id=${res.data.id} class="justify-content-center mt-3 rounded border border-info col-md-3"><div class="col align-item-center">
+            <h3 class="text-primary text-center">${res.data.title}</h3>
             
-          
-            </div></div>`;
+            <img class="rounded mx-auto d-block img-thumbnail" height="200" width="190" src="${res.data.productUrl}" alt="${res.data.title}">
+            <h3 class="text-success text-center">${res.data.productPrice}$</h3>
+            <h3 class="text-dark text-center">Total Quantity: ${mainObj.products[i].qty}</h3>
+            <h3 class="text-dark text-center">Total Price: ${mainObj.products[i].qty * res.data.productPrice} $</h3>
+            <p class="text-dark text-center fst-italic">${res.data.productDescription}</p>
+            </div></div>`
+            if(res.data.id){
+                parent.innerHTML+=child;
 
-                        parent_node.innerHTML = parent_node.innerHTML + child_node;
-
-                    }
-
+            }
+            else{
+                parent.innerHTML+=`<div id=${res.data.id} class="justify-content-center mt-3 rounded border border-info col-md-3"><div class="col align-item-center">
+            <h3 class="text-danger text-center">Not available</h3>
+            
+            <img class="rounded mx-auto d-block img-thumbnail" height="200" width="190" src="${res.data.productUrl}" alt="Img Not Available ">
+            <h3 class="text-success text-center">Not Available</h3>
+            <h3 class="text-dark text-center">Total Quantity: ${mainObj.products[i].qty}</h3>
+            <h3 class="text-dark text-center">Total Price: Not Found</h3>
+            <p class="text-dark text-center fst-italic">${res.data.productDescription}</p>
+            </div></div>`
+            }
+                                
+                            });
+                            
+                            
+                            
+                            
+                        }
+         
                 }
                 catch (err) {
-                    document.body.innerHTML += `<h3>1st ON REFRESH:something went wrong::ref${err}</h3>`
+                    document.body.innerHTML += `< h3 > 1st ON REFRESH: something went wrong:: ref${ err }</h3>`
 
 
                 }
@@ -116,7 +135,7 @@
             get();
         });
 
-
+       
 
 
 

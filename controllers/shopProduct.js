@@ -20,19 +20,20 @@ exports.getAllProducts=(req,res,next)=>{
 }
 //for cart
 exports.postcart=(req,res,next)=>{
-    const mycart= new Cart(req.body.id,req.body.title,req.body.productUrl,req.body.productPrice,req.body.productDescription);
-    mycart.save();
-    res.redirect('/shop/cart');
-}
-exports.getCartItem=(req,res,next)=>{
-    Cart.fetchAll((products)=>{
-        res.json(products);
-    });
+    Cart.addProductToCart(req.body.id,req.body.productPrice)
+     res.redirect('/shop/cart');
+ }
+ exports.getCartItem=(req,res,next)=>{
+     Cart.fetchAll((products)=>{
+         res.json(products);
+     });
+ 
+ }
+ exports.getcartPage=(req,res,next)=>{
+     res.sendFile(path.join(rootDir, 'views', 'yourCart.html'));
+ }
 
-}
-exports.getcartPage=(req,res,next)=>{
-    res.sendFile(path.join(rootDir, 'views', 'yourCart.html'));
-}
+ 
 exports.getProductView=(req,res,next)=>{
     res.sendFile(path.join(rootDir,'views','shop.html'));
 
