@@ -22,7 +22,7 @@ router.get('/shop/all-Products',getShopProductController.getAllProducts);
 router.delete('/:prodId',getShopProductController.deleteProduct)
 
 
-//single product info:-->
+
 router.get('/:productId',getShopProductController.getProductById);
 
 

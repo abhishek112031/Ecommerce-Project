@@ -84,7 +84,8 @@
                         let getResponse = await axios.get("http://localhost:3000/cart");
                         let mainObj = getResponse.data;
                          
-                        // total.innerHTML = `${mainObj.totalPrice} $`;
+
+                        total.innerHTML = `${mainObj.totalPrice} $`;
                         for (let i = 0; i < mainObj.products.length; i++) {
                           
                             axios.get(`http://localhost:3000/${mainObj.products[i].id}`)
@@ -102,7 +103,6 @@
             </div></div>`
             if(res.data.id){
                 parent.innerHTML+=child;
-                total.innerHTML = `${mainObj.totalPrice} $`;
 
             }
             else{
@@ -115,9 +115,6 @@
             <h3 class="text-dark text-center">Total Price: Not Found</h3>
             <p class="text-dark text-center fst-italic">${res.data.productDescription}</p>
             </div></div>`
-             
-           
-
             }
                                 
                             });

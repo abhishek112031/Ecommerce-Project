@@ -33,7 +33,7 @@ exports.postcart=(req,res,next)=>{
      res.sendFile(path.join(rootDir, 'views', 'yourCart.html'));
  }
 
-//for shop:-->
+ 
 exports.getProductView=(req,res,next)=>{
     res.sendFile(path.join(rootDir,'views','shop.html'));
 
