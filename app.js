@@ -15,15 +15,15 @@ const successRoutes = require('./routes/success');
 const errController = require('./controllers/err404');
 
 //dataBase:db is basically the pool that allows us connections init
-const db=require('./util/database');
+// const db=require('./util/database');
 
-db.execute('SELECT * FROM products')
-.then((res)=>{
-    console.log(res[0]);
-})
-.catch((err)=>{
-    console.log(err);
-});
+// db.execute('SELECT * FROM products')
+// .then((res)=>{
+//     console.log(res);
+// })
+// .catch((err)=>{
+//     console.log(err);
+// });
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));

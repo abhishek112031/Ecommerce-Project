@@ -5,13 +5,15 @@ const Product=require('../models/products');
 const Cart=require('../models/cart');
 
 exports.getProduct = (req, res, next) => {
-    Product.fetchAll((products)=>{
-        //passing parameters in anonymous function;
-        //console.log('fetch-all',products);
-          res.json(products);
+    Product.fetchAll()
+    .then(([rows,fieldData])=>{
+        res.json(rows);
+    })
+    .catch((err)=>{
+        console.log(err);
     });
     
-    // res.sendFile(path.join(rootDir, 'views', 'shop.html'));
+    
     
 }
 exports.getAllProducts=(req,res,next)=>{
@@ -45,12 +47,12 @@ exports.getProductView=(req,res,next)=>{
 //for id:
 exports.getProductById=(req,res,next)=>{
     const prodId=req.params.productId;
-    Product.findById(prodId,product=>{
-        console.log(product);
-        res.json(product);
-    // res.sendFile(path.join(rootDir, 'views', 'product-details.html'));
-        
-        
+    Product.findById(prodId)
+    .then(([product])=>{
+        res.json(product[0]);
+    })
+    .catch(err=>{
+        console.log(err);
     })
     
 
@@ -58,9 +60,15 @@ exports.getProductById=(req,res,next)=>{
 
 exports.deleteProduct=(req,res,next)=>{
     const productId=req.params.prodId;
-    Product.deleteById(productId,products=>{
+    Product.deleteById(productId)
+    .then(([products])=>{
+
         res.json(products);
     })
+    .catch(err=>{
+        console.log(err)
+    });
+    
 
 }
 
