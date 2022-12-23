@@ -5,16 +5,12 @@ const Product=require('../models/products');
 const Cart=require('../models/cart');
 
 exports.getProduct = (req, res, next) => {
-    Product.fetchAll()
-    .then(([rows,fieldData])=>{
-        res.json(rows);
+    Product.findAll()
+    .then((products)=>{
+        res.json(products);
     })
-    .catch((err)=>{
-        console.log(err);
-    });
-    
-    
-    
+    .catch((err)=>console.log(err))
+   
 }
 exports.getAllProducts=(req,res,next)=>{
     res.sendFile(path.join(rootDir, 'views','products-list.html'));
@@ -47,24 +43,36 @@ exports.getProductView=(req,res,next)=>{
 //for id:
 exports.getProductById=(req,res,next)=>{
     const prodId=req.params.productId;
-    Product.findById(prodId)
-    .then(([product])=>{
-        res.json(product[0]);
+    Product.findByPk(prodId)
+    .then((product)=>{
+        res.json(product);
     })
     .catch(err=>{
         console.log(err);
     })
-    
 
+    // another method:(product Array form)
+    //  Product.findAll({where:{id:prodId}})
+    // .then((product)=>{
+    //     res.json(product[0]);
+    // })
+    // .catch(err=>{
+    //     console.log(err);
+    // })
+    
 }
 
 exports.deleteProduct=(req,res,next)=>{
     const productId=req.params.prodId;
-    Product.deleteById(productId)
-    .then(([products])=>{
-
-        res.json(products);
+    Product.findByPk(productId)
+    .then((product)=>{//step to delete single product
+        product.destroy(); 
     })
+    .then(
+        (products)=>{ // step to fetch all-products after deletion 
+            res.json(products);
+        }
+    )
     .catch(err=>{
         console.log(err)
     });

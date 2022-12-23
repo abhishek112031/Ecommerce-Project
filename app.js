@@ -14,16 +14,10 @@ const successRoutes = require('./routes/success');
 
 const errController = require('./controllers/err404');
 
-//dataBase:db is basically the pool that allows us connections init
-// const db=require('./util/database');
 
-// db.execute('SELECT * FROM products')
-// .then((res)=>{
-//     console.log(res);
-// })
-// .catch((err)=>{
-//     console.log(err);
-// });
+const sequelize=require('./util/database');
+
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -40,7 +34,15 @@ app.use(shopRoutes);
 app.use(errController.error404);
 
 
+sequelize.sync()
+.then((result)=>{
+    // console.log(result);
+    app.listen(3000);
+})
+.catch((err)=>{
+    console.log(err);
+});
 
 
-app.listen(3000);
+
 

@@ -1,40 +1,27 @@
+const Sequelize=require('sequelize');
+const sequelize=require('../util/database');
 
-const path = require('path');
-// const fs = require('fs');
-const rootDir = require('../util/path');
-const db=require('../util/database');
+const Product=sequelize.define('product',{
+    id: {
+        type:Sequelize.INTEGER,
+        autoIncrement:true,
+        allowNull:false,
+        primaryKey:true
+    },
+    title: Sequelize.STRING,
 
-
-module.exports = class Product {
-    constructor(id,title, productUrl, productPrice, productDescription) {
-        this.id=id;
-        this.title = title;
-        this.productPrice = productPrice;
-        this.productUrl = productUrl;
-        this.productDescription = productDescription;
+    productPrice: {
+        type: Sequelize.DOUBLE,
+        allowNull:false
+    },
+    productUrl:{
+        type:Sequelize.STRING,
+        allowNull:false
+    },
+    productDescription:{
+        type:Sequelize.STRING,
+        allowNull:false
     }
+});
 
-    save() {
-       return db.execute('INSERT INTO products (title,productPrice,productUrl,productDescription) VALUES (?,?,?,?)',[this.title,this.productPrice,this.productUrl,this.productDescription])
-    
-    }
-
-    static fetchAll() {
-       return  db.execute('SELECT * FROM products');
-        
-    }
-
-    static findById(id){
-        return db.execute('SELECT * FROM products WHERE products.id=?',[id]);
-        
-
-
-    }
-   
-    static deleteById(id){
-        return db.execute('DELETE FROM products WHERE products.id=?',[id])
-
-
-    }
-       
-}
+module.exports=Product;

@@ -15,14 +15,20 @@ exports.postAddProduct = (req, res, next) => {
     const productUrl=req.body.productUrl;
     const productPrice=req.body.productPrice;
     const productDescription=req.body.productDescription;
-    const product=new Product(null,title,productUrl,productPrice,productDescription);//obj format
-    product.save()
+    Product.create({
+        title:title,
+        productUrl:productUrl,
+        productPrice:productPrice,
+        productDescription:productDescription
+    })
     .then(()=>{
-        res.redirect('/shop/all-Products');
+        // console.log(result);
+        res.redirect('/shop/all-Products')
+
     })
     .catch((err)=>{
-        console.log(err)
-    });
+        console.log(err);
+    })
     
 }
 
