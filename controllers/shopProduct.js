@@ -5,7 +5,8 @@ const Product=require('../models/products');
 const Cart=require('../models/cart');
 
 exports.getProduct = (req, res, next) => {
-    Product.findAll()
+    // Product.findAll()
+    req.user.getProducts()
     .then((products)=>{
         res.json(products);
     })
@@ -43,9 +44,9 @@ exports.getProductView=(req,res,next)=>{
 //for id:
 exports.getProductById=(req,res,next)=>{
     const prodId=req.params.productId;
-    Product.findByPk(prodId)
+    req.user.getProducts({where:{id:prodId}})
     .then((product)=>{
-        res.json(product);
+        res.json(product[0]);
     })
     .catch(err=>{
         console.log(err);
